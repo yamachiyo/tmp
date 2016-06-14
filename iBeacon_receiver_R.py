@@ -12,7 +12,7 @@ rospy.init_node('sensor_R')
 rate = rospy.Rate(10)
 
 
-def publish(self):
+def publish():
     pub1.publish(send_val)    
     print(send_val)
 

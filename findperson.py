@@ -22,12 +22,13 @@ class FindPerson:
         self.cascade = cv2.CascadeClassifier("/usr/share/OpenCV/haarcascades/haarcascade_fullbody.xml")
     
     def find(self):		#find person
-        person = self.cascade.detectMultiScale(self.image_g, scaleFactor=1.1, minNeighbors=2, minSize=(40,100))
+        person = self.cascade.detectMultiScale(self.image_g, scaleFactor=1.1, minNeighbors=2, minSize=(50,100))
+        #print person
 
         if len(person) > 0:
-            for rect in person:	#make rectangle
-                cv2.rectangle(self.image, tuple(rect[0:2]), tuple(rect[0:2]+rect[2:4]), (200,0,0), thickness=2)
-                print rect[0:2]+(rect[2:4]-rect[0:2])/2	#center
+            for (x,y,w,h) in person:	#make rectangle
+                cv2.rectangle(self.image, (x,y), (x+w,y+h), (200,0,0), thickness=2)
+                print x+w/2, y+h/2	#center
 
         cv2.imshow("Result", self.image)
         cv2.waitKey(1)

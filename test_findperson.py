@@ -22,8 +22,7 @@ class FindPerson:
 
     
     def find(self):		#find person
-        #self.hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
-        self.hog.setSVMDetector(cv2.HOGDescriptor_getPeopleDetector48x96())
+        self.hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
         hogParams = {'winStride': (8, 8), 'padding': (32, 32), 'scale': 1.05}
         human, r = self.hog.detectMultiScale(self.image_g, **hogParams)
 

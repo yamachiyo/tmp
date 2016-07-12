@@ -15,7 +15,7 @@ class NGArea:
 
     def __init__(self):
         self.p = 0
-        self.pub1 = rospy.Publisher('position_jr', Ints32 ,queue_size=3)
+        self.pub1 = rospy.Publisher('ng_position', Ints32 ,queue_size=3)
 
     def subscribe(self):
         sub1 = rospy.Subscriber('/scan', LaserScan, self.callback1)

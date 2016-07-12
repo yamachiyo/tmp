@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import numpy as np
 import rospy
-from std_msgs.msg import Int8
+from nkc_program.msg import Ints32
 from sensor_msgs.msg import LaserScan
 
 class NGArea:
@@ -11,11 +11,11 @@ class NGArea:
     c_angle = 40.0	#angle of center position[degree]
     a_angle = 180.0	#all angle to use[degree]
     lrf_data = LaserScan()
-    data_nga = Int8()
+    data_nga = Ints32()
 
     def __init__(self):
         self.p = 0
-        self.pub1 = rospy.Publisher('position_jr', Int8 ,queue_size=3)
+        self.pub1 = rospy.Publisher('position_jr', Ints32 ,queue_size=3)
 
     def subscribe(self):
         sub1 = rospy.Subscriber('/scan', LaserScan, self.callback1)
@@ -42,7 +42,7 @@ class NGArea:
         #print(self.short_list)
 
     def decide_ng(self):	#decide NG area
-        data_nga = []
+        self.data_nga = []
         p1 = 0		#number of points in position1
         p2 = 0		#number of points in position2
         p3 = 0		#number of points in position3
@@ -59,13 +59,13 @@ class NGArea:
             elif c_angle_e < self.short_list[i][0] < a_angle_e :
                 p3 += 1
         if p1 >= self.short_n :
-            data_nga.append(1)
+            self.data_nga.append(1)
         if p2 >= self.short_n :
-            data_nga.append(2)
+            self.data_nga.append(2)
         if p3 >= self.short_n :
-            data_nga.append(3)
+            self.data_nga.append(3)
 
-        print(data_nga)
+        print(self.data_nga)
 
     def publish(self):
         self.pub1.publish(self.data_nga)       

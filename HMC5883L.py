@@ -2,7 +2,7 @@
 #!/usr/bin/python
 
 import RPi.GPIO as GPIO
-import os, smbus, time
+import os, smbus, time, math
 import matplotlib
 matplotlib.use("Qt5Agg")
 import matplotlib.pyplot as plt
@@ -17,20 +17,24 @@ class HMC5883L():
         myBus = 1
     b = smbus.SMBus(myBus)
 
-    def setUp(self):
+    x = 0
+    y = 0
+    z = 0
+
+    def __init__(self):
         self.b.write_byte_data(self.DevAdr, 0x00, 0xE0)
 #		self.b.write_byte_data(self.DevAdr, 0x00, 0x10)
 #		self.b.write_byte_data(self.DevAdr, 0x01, 0x20)
         self.b.write_byte_data(self.DevAdr, 0x02, 0x00)
 
     def getValueX(self):
-        return self.getValue(0x03)
+        self.x = self.getValue(0x03)
 
     def getValueY(self):
-        return self.getValue(0x07)
+        self.y = self.getValue(0x07)
 
     def getValueZ(self):
-        return self.getValue(0x05)
+        self.z = self.getValue(0x05)
 
     def getValue(self, adr):
         tmp = self.b.read_byte_data(self.DevAdr, adr)
@@ -44,13 +48,17 @@ class HMC5883L():
 
         return tmp
 
-#	tmp = self.b.read_word_data(self.DevAdr, adr)
+    def offset(self):
+        pass
+        #base = 250
+        #tmp = math.sqrt(self.x**2 + self.y**2)
 
+        self.x = self.x + 100
+        self.y = self.y + 150
 
 
 # MAIN
-myHMC5883L = HMC5883L()
-myHMC5883L.setUp()
+measure = HMC5883L()
 
 #matplotlib
 fig = plt.figure()
@@ -61,16 +69,21 @@ ax.axhline(2,ls=":")
 ax.axvline(2,ls=":")
 
 # LOOP
-for a in range(1000):
+while True:
 
-    x = myHMC5883L.getValueX()
-    y = myHMC5883L.getValueY()
-    z = myHMC5883L.getValueZ()
-    print("X=", x)
-    print("Y=", y)
-    print("Z=", z)
+    measure.getValueX()
+    measure.getValueY()
+    measure.getValueZ()
+    measure.offset()
+    arg = math.atan2(-measure.x, measure.y) #[rad]
+    arg = arg/3.14*180  #degree
+    
+    print "X= " + str(measure.x)
+    print "Y= " + str(measure.y)
+    print "Z= " + str(measure.z)
+    print "arg from North :" + str(arg)
     print("----------")
 
-    ax.plot(-x,y,"bo")
+    ax.plot(-measure.x,measure.y,"bo")
     plt.pause(0.5)
 #    time.sleep(0.5)

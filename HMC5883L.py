@@ -22,8 +22,8 @@ class HMC5883L():
     z = 0
 
     def __init__(self):
-        self.b.write_byte_data(self.DevAdr, 0x00, 0xE0)
-#		self.b.write_byte_data(self.DevAdr, 0x00, 0x10)
+#        self.b.write_byte_data(self.DevAdr, 0x00, 0xE0)    #Hz
+        self.b.write_byte_data(self.DevAdr, 0x00, 0x70)
 #		self.b.write_byte_data(self.DevAdr, 0x01, 0x20)
         self.b.write_byte_data(self.DevAdr, 0x02, 0x00)
 
@@ -77,6 +77,7 @@ while True:
     measure.offset()
     arg = math.atan2(-measure.x, measure.y) #[rad]
     arg = arg/3.14*180  #degree
+    arg = arg - 5  #offset
     
     print "X= " + str(measure.x)
     print "Y= " + str(measure.y)
@@ -85,5 +86,5 @@ while True:
     print("----------")
 
     ax.plot(-measure.x,measure.y,"bo")
-    plt.pause(0.5)
+    plt.pause(0.3)
 #    time.sleep(0.5)

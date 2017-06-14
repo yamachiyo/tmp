@@ -1,0 +1,26 @@
+<launch>
+
+  <node pkg="nmea_navsat_driver" type="nmea_serial_driver" name="nmea_serial_driver" respawn="true" output="screen">
+    <param name="port" value="/dev/ttyS0"/>
+    <param name="baud" value="19200"/>
+  </node>
+
+  <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" respawn="true" output="screen">
+    <param name="yaw_offset" value="0"/>
+    <!--
+    <param name="zero_altitude" value="true"/>
+    <param name="publish_filtered_gps" value="false"/>
+    <param name="broadcast_utm_transform" value="true"/>
+    <param name="use_odometry_yaw" value="false"/>
+
+    <param name="wait_for_datum" value="true"/>
+    <rosparam param="datum">[49.2757225, -122.895907, 134.4, map, base_link]</rosparam>
+    -->
+
+    <!-- Remap input topics -->
+    <remap from="/gps/fix" to="/fix"/>
+    <remap from="/imu/data" to="/robot/imu"/>
+    <remap from="/odometry/filtered" to="/robot/pose"/>
+  </node>
+
+</launch>

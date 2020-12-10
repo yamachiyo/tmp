@@ -1,6 +1,3 @@
-## このリポジトリについて
-おもちゃ箱用プログラム
-
 ## セットアップ手順
 ラズパイ公式からNOOBS最新版をダウンロードし、SDカードにコピーする。  
 https://www.raspberrypi.org/downloads/noobs/

@@ -23,11 +23,6 @@ sudo reboot
 ラズパイで開発を行うなど、日本語入力が必要な作業をする予定がないなら不要。
 
 
-box用の自作プログラムをダウンロード
-```
-git clone https://github.com/yamachiyo/toybox.git
-```
-
 BLE関係のプログラムを動かすため、pyblenoをインストール
 ```
 sudo pip3 install pybleno
@@ -76,20 +71,5 @@ sudo nano /etc/ssh/sshd_config
 ```
 この中の"#Port 22"のコメントアウトを外し、ポートを変更。
 ```
-Port 49194
+Port [任意の番号]
 ```
-
-## 各プログラム説明
-### main.py
-メインのプログラム。これだけを実行すればいい。
-
-### raspi_audio.py
-ラズパイで音声ファイルを再生させるためのクラス。
-
-### raspi_ADS1115.py
-ラズパイでADCの値を読み込むためのクラス。
-
-### raspi_BLE.py
-ラズパイでBLE通信するためのクラス。
-main.py内に組み込まれているのでこのファイルは不要。
-記録用に残しているのみ。
